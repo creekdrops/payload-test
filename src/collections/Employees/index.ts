@@ -1,39 +1,7 @@
-import { CollectionAfterChangeHook, CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload/types";
 import { slug } from "../../fields/slug";
 import { isAdmin } from "../../utils/accessControl";
-
-const addToSortedHook: CollectionAfterChangeHook = async ({
-  doc,
-  operation,
-  req,
-}) => {
-  if (operation === "create" || (operation === "update" && doc)) {
-    const { id } = doc;
-
-    const employeeId = parseInt(id);
-
-    const { employeeOrder } = await req.payload.findGlobal({
-      slug: "sorting",
-      depth: 0,
-    });
-    if (
-      !employeeOrder.some(
-        (item) =>
-          typeof item.employee === "number" && item.employee === employeeId
-      )
-    ) {
-      console.log("Adding employee to sort order...");
-      await req.payload.updateGlobal({
-        slug: "sorting",
-        data: {
-          employeeOrder: [...employeeOrder, { employee: employeeId }],
-        },
-        overrideAccess: true,
-      });
-      console.log("Employee added");
-    }
-  }
-};
+import { addToSortedHook, setCreatedByUserIdHook } from "./hooks";
 
 const Employees: CollectionConfig = {
   slug: "employees",
@@ -70,40 +38,8 @@ const Employees: CollectionConfig = {
     },
   ],
   hooks: {
-    beforeChange: [
-      ({ req, operation, data }) => {
-        if (operation === "create") {
-          if (req.user) {
-            data.createdBy = req.user.id;
-            return data;
-          }
-        }
-      },
-    ],
-
+    beforeChange: [setCreatedByUserIdHook],
     afterChange: [addToSortedHook],
-
-    // afterDelete: async ({ doc }) => [
-    //   {
-    //     if(doc) {
-    //       const { id } = doc;
-    //
-    //       // Get the current sorting order
-    //       const sortingGlobal = await payload.findGlobal({
-    //         slug: "sorting",
-    //       });
-    //
-    //       // Remove the deleted employee's ID from the sorting order
-    //       const updatedOrder = sortingGlobal.employeeOrder.filter(
-    //         (e) => e.employee !== id
-    //       );
-    //       await payload.updateGlobal({
-    //         slug: "sorting",
-    //         data: { employeeOrder: updatedOrder },
-    //       });
-    //     },
-    //   },
-    // ],
   },
   access: {
     read: () => true,
