@@ -382,10 +382,7 @@ export interface PrivacyPolicy {
 }
 export interface Sorting {
   id: number;
-  employeeOrder: {
-    employee: number | Employee;
-    id?: string | null;
-  }[];
+  employeeOrder?: (number | Employee)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
