@@ -13,9 +13,9 @@ import Services from "./collections/Services";
 import Users from "./collections/Users";
 import Navigation from "./globals/Navigation";
 import Settings from "./globals/Settings";
-import Sorting from "./globals/Sorting";
 import PrivacyPolicy from "./globals/PrivacyPolicy";
 import { PostCategories, ServiceCategories } from "./collections/Categories";
+import Sorting from "./globals/Sorting";
 
 export default buildConfig({
   admin: {
