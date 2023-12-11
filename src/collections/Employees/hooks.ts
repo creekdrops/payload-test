@@ -23,15 +23,20 @@ export const addToSortedHook: CollectionAfterChangeHook = async ({
           typeof item.employee === "number" && item.employee === employeeId
       )
     ) {
-      console.log("Adding employee to sort order...");
-      await req.payload.updateGlobal({
-        slug: "sorting",
-        data: {
-          employeeOrder: [...employeeOrder, { employee: employeeId }],
-        },
-        overrideAccess: true,
-      });
-      console.log("Employee added");
+      try {
+        console.log("Adding employee");
+        console.log("employeeId", employeeId);
+        await req.payload.updateGlobal({
+          slug: "sorting",
+          data: {
+            employeeOrder: [...employeeOrder, { employee: employeeId }],
+          },
+          overrideAccess: true,
+        });
+        console.log("Employee added");
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };
