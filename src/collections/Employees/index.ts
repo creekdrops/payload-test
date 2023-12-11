@@ -2,7 +2,7 @@ import { CollectionAfterChangeHook, CollectionConfig } from "payload/types";
 import { slug } from "../../fields/slug";
 import { isAdmin } from "../../utils/accessControl";
 
-const afterChangeHook: CollectionAfterChangeHook = async ({
+const addToSortedHook: CollectionAfterChangeHook = async ({
   doc,
   operation,
   req,
@@ -81,7 +81,7 @@ const Employees: CollectionConfig = {
       },
     ],
 
-    afterChange: [afterChangeHook],
+    afterChange: [addToSortedHook],
 
     // afterDelete: async ({ doc }) => [
     //   {

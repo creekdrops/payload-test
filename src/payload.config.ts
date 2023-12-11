@@ -13,7 +13,7 @@ import Services from "./collections/Services";
 import Users from "./collections/Users";
 import Navigation from "./globals/Navigation";
 import Settings from "./globals/Settings";
-import EmployeeOrder from "./globals/EmployeeOrder";
+import Sorting from "./globals/Sorting";
 import PrivacyPolicy from "./globals/PrivacyPolicy";
 import { PostCategories, ServiceCategories } from "./collections/Categories";
 
@@ -33,7 +33,7 @@ export default buildConfig({
     PostCategories,
     ServiceCategories,
   ],
-  globals: [Settings, Navigation, PrivacyPolicy, EmployeeOrder],
+  globals: [Settings, Navigation, PrivacyPolicy, Sorting],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
